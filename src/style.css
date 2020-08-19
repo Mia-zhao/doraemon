@@ -421,15 +421,15 @@ body {
 }
 
 @keyframes bell-animation {
-  0%, 32%, 40%, 48%, 56%, 64%, 100% {
+  0%, 32%, 40%, 48%, 56%, 64%, 76%, 84%, 92%, 100% {
     transform: rotate(0deg);
     transform-origin: top center;
   }
-  36%, 52% {
+  36%, 52%, 72%, 88% {
     transform: rotate(30deg);
     transform-origin: top center;
   }
-  44%, 60% {
+  44%, 60%, 80%, 96% {
     transform: rotate(-30deg);
     transform-origin: top center;
   }
