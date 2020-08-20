@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "build": "rm -rf anime/* && parcel build src/index.html --public-url ./ -d anime"
+    "build": "rm -rf anime/* && parcel build src/index.html --public-url ./ -d anime",
+    "dev": "parcel src/index.html -d anime"
   },
   "name": "doraemon",
   "version": "1.0.0",

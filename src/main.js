@@ -21,6 +21,10 @@ function moveEyeballs (e) {
   });
 };
 
+let codeStyle = document.querySelector("#codeStyle");
+codeStyle = codeStyle ? codeStyle : document.querySelector("style");
+const origStyle = document.querySelector("style").innerHTML;
+
 let stringBuffer = "";
 let index = 0;
 
@@ -32,7 +36,7 @@ const printHTML = () => {
   stringBuffer += code[index] === "\n" ? "<br>" :
     (code[index] === " ") ? "&nbsp;" : code[index];
   codeContent.innerHTML = stringBuffer;
-  codeStyle.innerHTML = code.substr(0, index+1);
+  codeStyle.innerHTML = `${origStyle}\n${code.substr(0, index+1)}`;
   scrollToContent();
   if (index < code.length - 1) {
     index ++;
@@ -78,7 +82,7 @@ btnPlay.onclick = ()=> {
 btnSkip.onclick = ()=> {
   stop();
   codeContent.innerHTML = code.replace(/\n/g, "<br>").replace(/ /g, "&nbsp;");
-  codeStyle.innerHTML = code;
+  codeStyle.innerHTML = `${origStyle}\n${code}`;
   scrollToContent();
 
   finished = true;
