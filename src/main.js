@@ -1,5 +1,9 @@
 import code from './code.js';
 
+const normalSpeed = 80;
+const quadraSpeed = 20;
+const hexaSpeed = 5;
+
 const figureElement = document.querySelector(".figure");
 figureElement.addEventListener("touchmove", moveEyeballs);
 figureElement.addEventListener("mousemove", moveEyeballs);
@@ -17,87 +21,83 @@ function moveEyeballs (e) {
   });
 };
 
-const normalSpeed = 80;
-const quadraSpeed = 20;
-const hexaSpeed = 5;
-
 let stringBuffer = "";
 let index = 0;
+
+let finished = false;
 
 let interval = normalSpeed;
 
 const printHTML = () => {
-  const isChinseChar = code[index].match(/[\u3400-\u9FBF]/);
   stringBuffer += code[index] === "\n" ? "<br>" :
     (code[index] === " ") ? "&nbsp;" : code[index];
   codeContent.innerHTML = stringBuffer;
   codeStyle.innerHTML = code.substr(0, index+1);
-  window.scrollTo(0, document.body.scrollHeight);
-  document.querySelector("#codeContent-wrapper").scrollTo(0, codeContent.scrollHeight);
+  scrollToContent();
   if (index < code.length - 1) {
     index ++;
   } else {
-    window.clearInterval(id);
-    return;
+    finished = true;
+    stop();
   }
 };
 
+const scrollToContent = ()=> {
+  window.scrollTo(0, document.body.scrollHeight);
+  document.querySelector("#codeContent-wrapper").scrollTo(0, codeContent.scrollHeight);
+};
+
+const play = (interval)=> {
+  btnPlay.disabled = true;
+  btnPause.disabled = false;
+  return setInterval(printHTML, interval);
+}
+
+const stop = ()=> {
+  window.clearInterval(id);
+  btnPlay.disabled = false;
+  btnPause.disabled = true;
+};
+
 btnPlay.disabled = true;
-let id = setInterval(()=>{
-  printHTML()
-}, interval);
+let id = play(interval);
 
 btnPause.onclick = ()=> {
-  window.clearInterval(id);
-  btnPause.disabled = true;
-  btnPlay.disabled = false;
+  stop();
 };
 
 btnPlay.onclick = ()=> {
-  id = setInterval(()=>{
-    printHTML()
-  }, interval);
-  btnPause.disabled = false;
-  btnPlay.disabled = true;
+  if (finished) {
+    index = 0;
+    stringBuffer = "";
+    finished = false;
+  }
+  id = play(interval);
 };
 
 btnSkip.onclick = ()=> {
-  window.clearInterval(id);
+  stop();
   codeContent.innerHTML = code.replace(/\n/g, "<br>").replace(/ /g, "&nbsp;");
   codeStyle.innerHTML = code;
-  window.scrollTo(0, document.body.scrollHeight);
-  document.querySelector("#codeContent-wrapper").scrollTo(0, codeContent.scrollHeight);
+  scrollToContent();
 
-  index = 0;
-  stringBuffer = "";
+  finished = true;
 }
 
 btnNormalSpeed.onclick = ()=> {
-  window.clearInterval(id);
+  stop();
   interval = normalSpeed;
-  id = setInterval(()=>{
-    printHTML()
-  }, interval);
-  btnPause.disabled = false;
-  btnPlay.disabled = true;
+  id = play(interval);
 }
 
 btnQuadraSpeed.onclick = ()=> {
-  window.clearInterval(id);
+  stop();
   interval = quadraSpeed;
-  id = setInterval(()=>{
-    printHTML()
-  }, interval);
-  btnPause.disabled = false;
-  btnPlay.disabled = true;
+  id = play(interval);
 }
 
 btnHexaSpeed.onclick = ()=> {
-  window.clearInterval(id);
+  stop();
   interval = hexaSpeed;
-  id = setInterval(()=>{
-    printHTML()
-  }, interval);
-  btnPause.disabled = false;
-  btnPlay.disabled = true;
+  id = play(interval);
 }
