@@ -17,21 +17,87 @@ function moveEyeballs (e) {
   });
 };
 
+const normalSpeed = 80;
+const quadraSpeed = 20;
+const hexaSpeed = 5;
+
 let stringBuffer = "";
 let index = 0;
 
-(function printHTML(timeout=20) {
-  setTimeout(()=>{
-    const isChinseChar = code[index].match(/[\u3400-\u9FBF]/);
-    stringBuffer += code[index] === "\n" ? "<br>" :
-      (code[index] === " ") ? "&nbsp;" : code[index];
-    codeContent.innerHTML = stringBuffer;
-    codeStyle.innerHTML = code.substr(0, index+1);
-    window.scrollTo(0, document.body.scrollHeight);
-    document.querySelector("#codeContent-wrapper").scrollTo(0, codeContent.scrollHeight);
-    if (index < code.length - 1) {
-      index ++;
-      printHTML(isChinseChar ? 80 : undefined);
-    }
-  }, timeout)
-}) ();
+let interval = normalSpeed;
+
+const printHTML = () => {
+  const isChinseChar = code[index].match(/[\u3400-\u9FBF]/);
+  stringBuffer += code[index] === "\n" ? "<br>" :
+    (code[index] === " ") ? "&nbsp;" : code[index];
+  codeContent.innerHTML = stringBuffer;
+  codeStyle.innerHTML = code.substr(0, index+1);
+  window.scrollTo(0, document.body.scrollHeight);
+  document.querySelector("#codeContent-wrapper").scrollTo(0, codeContent.scrollHeight);
+  if (index < code.length - 1) {
+    index ++;
+  } else {
+    window.clearInterval(id);
+    return;
+  }
+};
+
+btnPlay.disabled = true;
+let id = setInterval(()=>{
+  printHTML()
+}, interval);
+
+btnPause.onclick = ()=> {
+  window.clearInterval(id);
+  btnPause.disabled = true;
+  btnPlay.disabled = false;
+};
+
+btnPlay.onclick = ()=> {
+  id = setInterval(()=>{
+    printHTML()
+  }, interval);
+  btnPause.disabled = false;
+  btnPlay.disabled = true;
+};
+
+btnSkip.onclick = ()=> {
+  window.clearInterval(id);
+  codeContent.innerHTML = code.replace(/\n/g, "<br>").replace(/ /g, "&nbsp;");
+  codeStyle.innerHTML = code;
+  window.scrollTo(0, document.body.scrollHeight);
+  document.querySelector("#codeContent-wrapper").scrollTo(0, codeContent.scrollHeight);
+
+  index = 0;
+  stringBuffer = "";
+}
+
+btnNormalSpeed.onclick = ()=> {
+  window.clearInterval(id);
+  interval = normalSpeed;
+  id = setInterval(()=>{
+    printHTML()
+  }, interval);
+  btnPause.disabled = false;
+  btnPlay.disabled = true;
+}
+
+btnQuadraSpeed.onclick = ()=> {
+  window.clearInterval(id);
+  interval = quadraSpeed;
+  id = setInterval(()=>{
+    printHTML()
+  }, interval);
+  btnPause.disabled = false;
+  btnPlay.disabled = true;
+}
+
+btnHexaSpeed.onclick = ()=> {
+  window.clearInterval(id);
+  interval = hexaSpeed;
+  id = setInterval(()=>{
+    printHTML()
+  }, interval);
+  btnPause.disabled = false;
+  btnPlay.disabled = true;
+}

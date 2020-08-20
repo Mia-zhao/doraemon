@@ -102,7 +102,7 @@ body {
 /*
  * 画出胡须和嘴巴
  */
-.moustache-mid {
+.moustache {
   border-left: var(--border-style);
   width: 10px;
   height: 40px;
@@ -113,7 +113,7 @@ body {
   z-index: 2;
 }
 
-.moustache {
+.whisker {
   border-bottom: var(--border-style);
   height: 10px;
   border-radius: 50%;
@@ -121,37 +121,37 @@ body {
   left: 50%;
   z-index: 2;
 }
-.moustache.left1 {
+.whisker.left1 {
   width: 40px;
   margin-left: -66px;
   top: 44px;
   transform: rotate(25deg);
 }
-.moustache.right1 {
+.whisker.right1 {
   width: 40px;
   margin-left: 25px;
   top: 44px;
   transform: rotate(-25deg);
 }
-.moustache.left2 {
+.whisker.left2 {
   width: 44px;
   margin-left: -70px;
   top: 52px;
   transform: rotate(15deg);
 }
-.moustache.right2 {
+.whisker.right2 {
   width: 44px;
   margin-left: 26px;
   top: 52px;
   transform: rotate(-15deg);
 }
-.moustache.left3 {
+.whisker.left3 {
   width: 48px;
   margin-left: -74px;
   top: 60px;
   transform: rotate(5deg);
 }
-.moustache.right3 {
+.whisker.right3 {
   width: 48px;
   margin-left: 26px;
   top: 60px;
@@ -414,13 +414,9 @@ body {
   0%, 40%, 80%, 100% {
     transform: translateY(0px);
   }
-  20% {
+  20%, 60% {
     transform: translateY(-30px);
   }
-  60% {
-    transform: translateY(-30px);
-  }
-}
- `;
+}`;
 
- module.exports = code;
+module.exports = code;
