@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "build": "rm -rf anime/* && parcel build src/index.html --public-url ./ -d anime"
+  },
+  "name": "doraemon",
+  "version": "1.0.0",
+  "main": "main.js",
+  "author": "Mia Zhao<miazhaouw@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "cssnano": "^4.1.10"
+  }
+}
