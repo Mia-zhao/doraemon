@@ -2,9 +2,13 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 *::before, *::after {
   box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
 :root {
@@ -16,12 +20,13 @@
 }
 
 #codeContent-wrapper {
-  margin-top: 10px;
-  margin-left: 10px;
+  padding-top: 10px;
+  padding-left: 10px;
   position: absolute;
   height: 50vh;
-  width: 100%;
+  max-width: 100%;
   overflow-y: auto;
+  scrollbar-width: none;
 }
 
 #codeContent-wrapper::-webkit-scrollbar {
@@ -30,10 +35,9 @@
 
 .buttons {
   margin-left: 10px;
-  margin-top: 20px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   position: absolute;
   top: 50vh;
   z-index: 10;
@@ -48,10 +52,10 @@ button {
 button:hover::after {
   border: 1px solid black;
   background-color: white;
-  padding: 6px;
+  padding: 2px 6px;
   position: absolute;
   left: 50%;
-  top: 60%;
+  top: 50%;
   white-space: nowrap;
   z-index: 1;
 }

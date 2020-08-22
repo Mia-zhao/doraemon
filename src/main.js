@@ -1,8 +1,7 @@
 import code from './code.js';
 
-const normalSpeed = 80;
-const quadraSpeed = 20;
-const hexaSpeed = 5;
+const DEFAULT_INTERVAL = 40;
+const NORMAL_CHARS_PER_ITER = 1;
 
 const figureElement = document.querySelector(".figure");
 figureElement.addEventListener("touchmove", moveEyeballs);
@@ -25,24 +24,34 @@ let codeStyle = document.querySelector("#codeStyle");
 codeStyle = codeStyle ? codeStyle : document.querySelector("style");
 const origStyle = document.querySelector("style").innerHTML;
 
-let stringBuffer = "";
-let index = 0;
+let stringBuffer;
+let index;
+let charsPerIter = NORMAL_CHARS_PER_ITER;
 
-let finished = false;
+const reset = ()=> {
+  stringBuffer = "";
+  index = 0;
+};
 
-let interval = normalSpeed;
+reset();
 
 const printHTML = () => {
-  stringBuffer += code[index] === "\n" ? "<br>" :
-    (code[index] === " ") ? "&nbsp;" : code[index];
-  codeContent.innerHTML = stringBuffer;
-  codeStyle.innerHTML = `${origStyle}\n${code.substr(0, index+1)}`;
-  scrollToContent();
-  if (index < code.length - 1) {
+  let finished = false;
+  for (let i = 0; i < charsPerIter; i++) {
+    stringBuffer += code[index] === "\n" ? "<br>" :
+      (code[index] === " ") ? "&nbsp;" : code[index];
     index ++;
-  } else {
-    finished = true;
+    if (index > code.length - 1) {
+      finished = true;
+      break;
+    }
+  }
+  codeContent.innerHTML = stringBuffer;
+  codeStyle.innerHTML = `${origStyle}\n${code.substr(0, index)}`;
+  scrollToContent();
+  if (finished) {
     stop();
+    reset();
   }
 };
 
@@ -51,32 +60,31 @@ const scrollToContent = ()=> {
   document.querySelector("#codeContent-wrapper").scrollTo(0, codeContent.scrollHeight);
 };
 
-const play = (interval)=> {
-  btnPlay.disabled = true;
-  btnPause.disabled = false;
-  return setInterval(printHTML, interval);
-}
-
 const stop = ()=> {
   window.clearInterval(id);
   btnPlay.disabled = false;
   btnPause.disabled = true;
 };
 
+let id;
+
+const play = (numChars)=> {
+  stop();
+  btnPlay.disabled = true;
+  btnPause.disabled = false;
+  charsPerIter = numChars;
+  id = setInterval(printHTML, DEFAULT_INTERVAL);
+}
+
 btnPlay.disabled = true;
-let id = play(interval);
+play(charsPerIter);
 
 btnPause.onclick = ()=> {
   stop();
 };
 
 btnPlay.onclick = ()=> {
-  if (finished) {
-    index = 0;
-    stringBuffer = "";
-    finished = false;
-  }
-  id = play(interval);
+  play(charsPerIter);
 };
 
 btnSkip.onclick = ()=> {
@@ -85,23 +93,17 @@ btnSkip.onclick = ()=> {
   codeStyle.innerHTML = `${origStyle}\n${code}`;
   scrollToContent();
 
-  finished = true;
+  reset();
 }
 
 btnNormalSpeed.onclick = ()=> {
-  stop();
-  interval = normalSpeed;
-  id = play(interval);
+  play(NORMAL_CHARS_PER_ITER);
 }
 
 btnQuadraSpeed.onclick = ()=> {
-  stop();
-  interval = quadraSpeed;
-  id = play(interval);
+  play(4 * NORMAL_CHARS_PER_ITER);
 }
 
 btnHexaSpeed.onclick = ()=> {
-  stop();
-  interval = hexaSpeed;
-  id = play(interval);
+  play(16 * NORMAL_CHARS_PER_ITER);
 }

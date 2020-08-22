@@ -355,7 +355,8 @@ body {
   top: 3px;
 }
 @keyframes bell-animation {
-  0%, 32%, 40%, 48%, 56%, 64%, 76%, 84%, 92%, 100% {
+  0%, 32%, 40%, 48%, 56%, 
+  64%, 76%, 84%, 92%, 100% {
     transform: rotate(0deg);
     transform-origin: top center;
   }
